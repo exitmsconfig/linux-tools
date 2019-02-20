@@ -1,0 +1,43 @@
+[Unit]
+Description=Tomcat Server
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=forking
+
+LimitAS=infinity
+LimitCORE=infinity
+LimitCPU=infinity
+LimitDATA=infinity
+LimitFSIZE=infinity
+LimitLOCKS=infinity
+LimitMEMLOCK=64000
+LimitMSGQUEUE=819200
+LimitNOFILE=64000
+LimitNPROC=16000
+LimitRSS=infinity
+LimitRTPRIO=0
+LimitSIGPENDING=16000
+LimitSTACK=8192000
+
+Restart=always
+RestartSec=10
+
+TimeoutSec=30
+
+User=__USER_NAME__
+Group=__GROUP_NAME__
+
+Environment='CATALINA_HOME=__INSTALL_FOLDER_PATH__'
+Environment='HOME=__HOME_FOLDER__'
+Environment='JAVA_HOME=__JDK_INSTALL_FOLDER_PATH__'
+
+ExecStart='__INSTALL_FOLDER_PATH__/bin/startup.sh'
+ExecStop='__INSTALL_FOLDER_PATH__/bin/shutdown.sh'
+ExecStopPost=/bin/bash -c -e '\
+    cd \'__INSTALL_FOLDER_PATH__/logs\' && find \'.\' -not -name \'.\' -delete && \
+    cd \'__INSTALL_FOLDER_PATH__/temp\' && find \'.\' -not -name \'.\' -delete \
+'
